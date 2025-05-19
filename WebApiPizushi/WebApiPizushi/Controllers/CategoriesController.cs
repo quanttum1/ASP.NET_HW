@@ -40,4 +40,29 @@ public class CategoriesController(AppDbPizushiContext pizushiContext,
         await pizushiContext.SaveChangesAsync();
         return Ok(entity);
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Edit(int id, [FromForm] CategoryEditModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var item = await pizushiContext.Categories.Where(x => x.Id == id).SingleOrDefaultAsync();
+        if (item == null)
+        {
+            return BadRequest("No item with such id");
+        }
+
+        item.Name = model.Name;
+        item.Slug = model.Slug;
+        await imageService.DeleteImageAsync(item.Image);
+        item.Image = await imageService.SaveImageAsync(model.ImageFile!);
+
+        pizushiContext.Categories.Update(item);
+        await pizushiContext.SaveChangesAsync();
+
+        return Ok(item);
+    }
 }
