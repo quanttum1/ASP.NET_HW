@@ -29,6 +29,7 @@ const CategoriesPage = () => {
                         <th>#</th>
                         <th>Назва</th>
                         <th>Image</th>
+                        <th>Edit</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -38,6 +39,7 @@ const CategoriesPage = () => {
                                 <td>{item.id}</td>
                                 <td>{item.name}</td>
                                 <td><img src={`${BASE_URL}/images/200_${item.image}`} alt={item.name} width={75}/></td>
+                                <td><Link to={`edit?id=${item.id}`}>Edit</Link></td>
                             </tr>
                         ))
                     }
